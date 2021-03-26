@@ -1,1 +1,1 @@
-web: gunicorn scauv.wsgi --log-file -
+web: gunicorn ava.wsgi --log-file -
