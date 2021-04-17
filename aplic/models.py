@@ -1,5 +1,23 @@
 from django.db import models
-from decimal import Decimal
+from django_cryptography.fields import encrypt
+from uuid import uuid4
+from stdimage import StdImageField
+
+
+def get_file_path(_instance, filename):
+    ext = filename.split('.')[-1]
+    filename = f'{uuid4()}.{ext}'
+    return filename
+
+
+#   valida as extensões de arquivos upados no campo foto
+def validate_file_extension(value):
+    import os
+    from django.core.exceptions import ValidationError
+    ext = os.path.splitext(value.name)[1]  # [0] returns path+filename
+    valid_extensions = ['.jpg', '.jpeg', '.png']
+    if not ext.lower() in valid_extensions:
+        raise ValidationError('Extensão de arquivo não suportada. Apenas .jpg, .jpeg ou .png')
 
 
 class Curso(models.Model):
@@ -14,8 +32,18 @@ class Curso(models.Model):
     def __str__(self):
         return self.nome
 
+
 class Pessoa(models.Model):
     nome = models.CharField('Nome', max_length=100)
+    email = models.EmailField('E-mail', max_length=200)
+    senha = encrypt(models.CharField(max_length=50))
+    foto = StdImageField(blank=True, null=True, delete_orphans=True, upload_to=get_file_path,
+                         variations={'thumbnail': {'width': 128, 'height': 128}}, )
+    lattes = models.CharField('Curriculo Lattes', blank=True, null=True, max_length=155)
+    facebook = models.CharField('Facebook', blank=True, null=True, max_length=155)
+    twitter = models.CharField('Twitter', blank=True, null=True, max_length=155)
+    instagram = models.CharField('Instagram', blank=True, null=True, max_length=155)
+    linkedin = models.CharField('Linkedin', blank=True, null=True, max_length=155)
 
     class Meta:
         abstract = True
@@ -38,20 +66,22 @@ class Professor(Pessoa):
         verbose_name = 'Professor'
         verbose_name_plural = 'Professores'
 
+
 class Aluno(Pessoa):
     matricula = models.IntegerField('Matricula', unique=True)
     data_nascimento = models.DateField('Data de nascimento', blank=True, null=True, help_text='Formato DD/MM/AAAA')
-    email = models.EmailField('E-mail', blank=True, max_length=200)
     curso = models.ForeignKey(Curso, null=True, on_delete=models.DO_NOTHING)
 
     class Meta:
         verbose_name = 'Aluno'
         verbose_name_plural = 'Alunos'
 
+
 class Disciplina(models.Model):
     curso = models.ForeignKey(Curso, null=True, on_delete=models.CASCADE)
     nome = models.CharField('Nome', max_length=100)
     carga_horaria = models.IntegerField('Carga Horária')
+    credito = models.IntegerField('Créditos')
     obrigatoria = models.BooleanField('Obrigatória', default=True)
     ementa = models.TextField('Ementa', blank=True, max_length=500)
     bibliografia = models.TextField('Bibliografia', blank=True, max_length=500)
@@ -63,6 +93,7 @@ class Disciplina(models.Model):
     def __str__(self):
         return self.nome
 
+
 class Turma(models.Model):
     ano = models.IntegerField('Ano')
     OPCOES = (
@@ -70,9 +101,36 @@ class Turma(models.Model):
         ('2', '.2'),
     )
     semestre = models.CharField('Semestre', max_length=2, choices=OPCOES)
-    turma = models.CharField('Turma', max_length=10)
+    PERIODOS = (
+        ('1', '1º'),
+        ('2', '2º'),
+        ('3', '3º'),
+        ('4', '4º'),
+        ('5', '5º'),
+        ('6', '6º'),
+        ('7', '7º'),
+        ('8', '8º'),
+        ('9', '9º'),
+        ('10', '10º'),
+        ('11', '11º'),
+        ('12', '12º'),
+    )
+    periodo = models.CharField('Período', max_length=3, choices=PERIODOS)
+    turma = models.CharField('Nome da Turma', max_length=10)
     disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE)
     professor = models.ForeignKey(Professor, null=True, on_delete=models.SET_NULL)
+    DIAS = (
+        ('1', 'Domingo'),
+        ('2', 'Segunda-feira'),
+        ('3', 'Terça-feira'),
+        ('4', 'Quarta-feira'),
+        ('5', 'Quinta-feira'),
+        ('6', 'Sexta-feira'),
+        ('7', 'Sábado'),
+    )
+    dia_da_semana = models.CharField('Dia da Semana', choices=DIAS, max_length=13)
+    horario_de_inicio = models.TimeField('Horário de início')
+    horario_de_termino = models.TimeField('Horário de término')
     alunos = models.ManyToManyField(Aluno)
 
     class Meta:
@@ -80,7 +138,8 @@ class Turma(models.Model):
         verbose_name_plural = 'Turmas'
 
     def __str__(self):
-        return f"{self.ano} / {self.semestre} / {self.turma} / {self.disciplina}"
+        return f"{self.turma} / {self.ano} / {self.semestre} / {self.disciplina}"
+
 
 class Arquivo(models.Model):
     OPCOES = (
@@ -106,10 +165,15 @@ class Avaliacao(models.Model):
         ('Trabalho', 'Trabalho'),
     )
     tipo = models.CharField('Tipo', max_length=20, choices=OPCOES)
+    COMPOSICOES = (
+        ('P1', 'P1'),
+        ('P2', 'P2'),
+        ('P3', 'P3'),
+    )
+    composicao = models.CharField('Composição', max_length=3, choices=COMPOSICOES)
     data_publicacao = models.DateField('Data Publicação', help_text='Formato DD/MM/AAAA')
     data_entrega = models.DateField('Data de Entrega', help_text='Formato DD/MM/AAAA')
-    # VOLTAR AQUI
-    arquivo = models.ForeignKey(Arquivo, null=True, on_delete=models.SET_NULL)
+    arquivo = models.FileField('Arquivo')
     valor_avaliacao = models.DecimalField('Valor Avaliação', max_digits=5, decimal_places=2)
     turma = models.ForeignKey(Turma, null=True, on_delete=models.SET_NULL)
     orientacoes = models.TextField('Orientações', blank=True, max_length=500)
@@ -119,11 +183,12 @@ class Avaliacao(models.Model):
         verbose_name_plural = 'Avaliações'
 
     def __str__(self):
-        return f"{self.tipo} / {self.data_publicacao} / {self.data_entrega} / {self.turma} / {self.valor_avaliacao}"
+        return f"{self.tipo} / {self.turma}"
+
 
 class Nota(models.Model):
-    avaliacao = models.ForeignKey(Avaliacao, null=True, on_delete=models.SET_NULL)
     turma = models.ForeignKey(Turma, null=True, on_delete=models.SET_NULL)
+    avaliacao = models.ForeignKey(Avaliacao, null=True, on_delete=models.SET_NULL)
     aluno = models.ForeignKey(Aluno, null=True, on_delete=models.SET_NULL)
     valor = models.DecimalField('Nota', max_digits=5, decimal_places=2)
 
@@ -133,5 +198,3 @@ class Nota(models.Model):
 
     def __str__(self):
         return f"{self.avaliacao} / {self.aluno} / {self.turma} / {self.valor}"
-
-

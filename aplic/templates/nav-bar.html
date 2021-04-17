@@ -1,0 +1,38 @@
+{% load static %}
+<section class="menu">
+  <div class="logo">
+    <img src="{% static './img/logo-uv.svg' %}" alt="Logo Universidade de Vassouras">
+  </div>
+  <div class="main-menu">
+    <ul>
+      <li class="dashboard">
+        <a href="/"><img src="{% static './img/menu-icons/dashboard.svg' %}" alt="Dashboard"></a>
+      </li>
+      <li data-active="estatisticas">
+        <a href="#"><img src="{% static './img/menu-icons/stats.svg' %}" alt="Estatisticas"></a>
+      </li>
+      <li data-active="calendario">
+        <a href="#"><img src="{% static './img/menu-icons/calendar.svg' %}" alt="calendario"></a>
+      </li>
+      <li data-active="disciplina">
+        <a href="disciplina.html"><img src="{% static './img/menu-icons/actives.svg' %}" alt="Atividades"></a>
+      </li>
+      <li data-active="mensagens">
+        <a href="#"><img src="{% static './img/menu-icons/messages.svg' %}" alt="Mensagens"></a>
+      </li>
+      <li data-active="forum">
+        <a href="#"><img src="{% static './img/menu-icons/forum.svg' %}" alt="fórum"></a>
+      </li>
+      <li data-active="setting">
+        <a href="#"><img src="{% static './img/menu-icons/settings.svg' %}" alt="Prefrências"></a>
+      </li>
+    </ul>
+  </div>
+  <div class="logout">
+    <ul>
+      <li>
+        <a href="#"><img src="{% static './img/menu-icons/logout.svg' %}" alt="Sair"></a>
+      </li>
+    </ul>
+  </div>
+</section>

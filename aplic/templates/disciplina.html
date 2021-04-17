@@ -1,0 +1,195 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/dashboard-style.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/bgrid-framework.v1.css' %}" />
+  <title>Ava - Universidade de Vassouras</title>
+</head>
+<body>
+  <section class="grid-container">
+    <!-- -->
+    {% include 'nav-bar.html' %}
+    <!-- -->
+    <section class="content-feed">
+      <div class="container">
+        <div class="feed-container">
+          <div class="row no-padding">
+            <div class="col col-d-80 col-t-80 col-m-100 head">
+              <div class="content-col">
+                <h1>{{turma.disciplina.nome}}</h1>
+                <p>Seja bem-vindo de volta, Igor Brown! Sua última aula assistida foi: Aula 7 - Adobe XD. <a href="#">Você deseja retornar a aula?</a></p>
+              </div>
+            </div>
+            <div class="col col-d-20 col-t-20 col-m-100 right middle t-dnone m-dnone">
+              <div class="content-col">
+                <a class="btn btn-red" href="#">Falar com professor</a>
+              </div>
+            </div>
+          </div>
+          <div class="row shortcuts no-padding">
+            <div class="col col-d-100 col-t-100 col-m-100 select-subjects">
+              <div class="content-col">
+                <ul>
+                  <li>
+                    <a class="active" href="#">Módulo 1</a>
+                  </li>
+                  <li>
+                    <a href="#">Todos os Módulos</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="row unity-subjects">
+            <div class="col col-d-33 col-t-50 col-m-100 zebra-box-disable">
+              <div class="content-col">
+                <h5>Aula 1</h5>
+                <p>Desbravando o Adobe XD</p>
+                <a class="btn btn-play" href="">Assistir novamente</a>
+              </div>
+            </div>
+            <div class="col col-d-33 col-t-50 col-m-100 zebra-box-disable">
+              <div class="content-col">
+                <h5>Aula 1</h5>
+                <p>Desbravando o Adobe XD</p>
+                <a class="btn btn-play" href="">Assistir novamente</a>
+              </div>
+            </div>
+            <div class="col col-d-33 col-t-50 col-m-100 zebra-box-disable">
+              <div class="content-col">
+                <h5>Aula 1</h5>
+                <p>Desbravando o Adobe XD</p>
+                <a class="btn btn-play" href="">Assistir novamente</a>
+              </div>
+            </div>
+            <div class="col col-d-33 col-t-50 col-m-100 zebra-box-disable">
+              <div class="content-col">
+                <h5>Aula 1</h5>
+                <p>Desbravando o Adobe XD</p>
+                <a class="btn btn-play" href="">Assistir novamente</a>
+              </div>
+            </div>
+            <div class="col col-d-33 col-t-50 col-m-100 zebra-box-disable">
+              <div class="content-col">
+                <h5>Aula 1</h5>
+                <p>Desbravando o Adobe XD</p>
+                <a class="btn btn-play" href="">Assistir novamente</a>
+              </div>
+            </div>
+            <div class="col col-d-33 col-t-50 col-m-100 zebra-box-disable">
+              <div class="content-col">
+                <h5>Aula 1</h5>
+                <p>Desbravando o Adobe XD</p>
+                <a class="btn btn-play" href="">Assistir novamente</a>
+              </div>
+            </div>
+            <div class="col col-d-33 col-t-50 col-m-100 zebra-box-disable">
+              <div class="content-col">
+                <h5>Aula 1</h5>
+                <p>Desbravando o Adobe XD</p>
+                <a class="btn btn-play" href="">Assistir novamente</a>
+              </div>
+            </div>
+            <div class="col col-d-33 col-t-50 col-m-100 zebra-box">
+              <div class="content-col">
+                <h5>Aula 1</h5>
+                <p>Desbravando o Adobe XD</p>
+                <a class="btn btn-play" href="">Iniciar Aula</a>
+              </div>
+            </div>
+            <div class="col col-d-33 col-t-50 col-m-100 zebra-box">
+              <div class="content-col">
+                <h5>Aula 1</h5>
+                <p>Desbravando o Adobe XD</p>
+                <a class="btn btn-play" href="">Iniciar Aula</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="sidebar t-dnone m-dnone">
+      <div class="sidebar-container container">
+        <div class="row">
+          <div class="col col-d-80 col-t-80 col-m-100">
+            <div class="content-col">
+              <input class="col col-d-80 col-t-80 col-m-100 input-search" type="text" placeholder="Pesquise por palavras chave">
+            </div>
+          </div>
+          <div class="col col-d-20 col-t-20 col-m-100 center t-dnone m-dnone">
+            <div class="content-col">
+              <button class="notifications">
+                <img src="{% static './img/notifications.svg' %}" alt="Notificações">
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col col-d-70 col-t-70 col-m-100">
+            <div class="content-col">
+              <h5>Professor(a)<br><span class="user-name">{{turma.professor.nome}}</span></h5>
+              <p class="saud"><a href="{{turma.professor.email}}" target="_blank">{{turma.professor.email}}</a></p>
+            </div>
+          </div>
+          <div class="col col-d-30 col-t-30 col-m-100 center">
+            <div class="content-col">
+              {% if turma.professor.foto %}
+              <img class="img-fluid radius-50" src="{{turma.professor.foto.url}}" alt="{{turma.professor.nome}}">
+              {% else %}
+              <img class="img-fluid radius-50" src="{% static './img/avatar.svg' %}" alt="{{user.nome}}">
+              {% endif %}
+
+            </div>
+          </div>
+        </div>
+        {% if turma.professor.lattes %}
+        <div class="row">
+          <div class="col col-d-70 col-t-70 col-m-100 t-dnone m-dnone">
+            <div class="content-col">
+              <input class="col col-d-70 col-t-70 col-m-100 input-copy" type="text" value="{{turma.professor.lattes}}">
+            </div>
+          </div>
+          <div class="col col-d-30 col-t-100 col-m-100 center" style="display: flex;align-items: center;">
+            <div class="content-col">
+              <a href="{{turma.professor.lattes}}" class="totvs" target="_blank">
+                LATTES
+              </a>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        <div class="row">
+          <div class="col col-d-100 col-t-100 col-m-100">
+            <h5>Provas e Trabalhos</h5>
+          </div>
+          {% if avaliacoes %}
+          {% for avaliacao in avaliacoes %}
+          <div class="col col-d-15 col-t-15 col-m-100 alerts">
+            <img class="img-fluid" src="{% static './img/lembrete-avaliation-red.svg' %}" alt="Lembrete Alerta">
+          </div>
+          <div class="col col-d-85 col-t-85 col-m-100 alerts">
+            <h6>{{avaliacao.tipo}} - {{avaliacao.composicao}}</h6>
+            <p>data da entrega: {{avaliacao.data_entrega}}</p>
+          </div>
+          {% endfor %}
+          {% for trabalho in trabalhos %}
+          <div class="col col-d-15 col-t-15 col-m-100 alerts">
+            <img class="img-fluid" src="{% static './img/lembrete-avaliation-yellow.svg' %}" alt="Lembrete Alerta">
+          </div>
+          <div class="col col-d-85 col-t-85 col-m-100 alerts">
+            <h6>{{trabalho.tipo}} - {{trabalho.composicao}}</h6>
+            <p>data da entrega: {{trabalho.data_entrega}}</p>
+          </div>
+          {% endfor %}
+          {% else %}
+          <p>Você não tem avaliações pendentes para a disciplina <strong>{{turma.disciplina.nome}}</strong> 👌</p>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+  </section>
+</body>
+</html>
